@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { users } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
+import cuid from "cuid";
 
 export async function POST(req: NextRequest) {
     try {
@@ -23,7 +24,8 @@ export async function POST(req: NextRequest) {
         const name = `${first_name || ""} ${last_name || ""}`.trim();
 
         await db.insert(users).values({
-            id,
+            id: cuid(),
+            clerkUserId: id, // Assuming the Clerk user ID is the same as `id`
             email,
             name,
             imageUrl: image_url,
