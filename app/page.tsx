@@ -6,6 +6,7 @@ import { button as buttonStyles } from "@heroui/theme";
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
+import FeatureArticles from "@/components/UI/FeatureArticles";
 
 export default function Home() {
   return (
@@ -53,6 +54,7 @@ export default function Home() {
           </span>
         </Snippet>
       </div>
+      <FeatureArticles />
     </section>
   );
 }
