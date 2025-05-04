@@ -1,9 +1,15 @@
+import { db } from "@/lib/db";
+import { users } from "@/lib/schema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json();
-        console.log("Webhook received:", body);
+        const { data } = await req.json();
+        console.log(data);
+
+        if (!data) {
+            return NextResponse.json({ error: "No body" }, { status: 400 });
+        }
 
         const {
             id, // Clerk user ID
@@ -11,19 +17,17 @@ export async function POST(req: NextRequest) {
             first_name,
             last_name,
             image_url,
-        } = body;
+        } = data;
 
         const email = email_addresses?.[0]?.email_address || "";
         const name = `${first_name || ""} ${last_name || ""}`.trim();
 
-        // await prisma.user.create({
-        //     data: {
-        //         clerkUserId: id,
-        //         email,
-        //         name,
-        //         imageUrl: image_url || null,
-        //     },
-        // });
+        await db.insert(users).values({
+            id,
+            email,
+            name,
+            imageUrl: image_url,
+        });
 
         return NextResponse.json({ message: "User created" }, { status: 200 });
     } catch (err) {
