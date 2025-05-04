@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
     try {
@@ -17,14 +16,14 @@ export async function POST(req: NextRequest) {
         const email = email_addresses?.[0]?.email_address || "";
         const name = `${first_name || ""} ${last_name || ""}`.trim();
 
-        await prisma.user.create({
-            data: {
-                clerkUserId: id,
-                email,
-                name,
-                imageUrl: image_url || null,
-            },
-        });
+        // await prisma.user.create({
+        //     data: {
+        //         clerkUserId: id,
+        //         email,
+        //         name,
+        //         imageUrl: image_url || null,
+        //     },
+        // });
 
         return NextResponse.json({ message: "User created" }, { status: 200 });
     } catch (err) {
