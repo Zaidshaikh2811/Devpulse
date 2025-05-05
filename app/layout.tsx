@@ -10,6 +10,7 @@ import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -60,6 +61,7 @@ export default function RootLayout({
                 </Link>
               </footer>
             </div>
+
           </ClerkProvider>
         </Providers>
       </body>
