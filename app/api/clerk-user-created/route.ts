@@ -6,7 +6,7 @@ import cuid from "cuid";
 export async function POST(req: NextRequest) {
     try {
         const { data } = await req.json();
-        console.log(data);
+
 
         if (!data) {
             return NextResponse.json({ error: "No body" }, { status: 400 });
