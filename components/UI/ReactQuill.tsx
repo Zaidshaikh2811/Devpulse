@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill-new'
+import dynamic from 'next/dynamic'
+import React from 'react'
+
 import 'react-quill-new/dist/quill.snow.css'
 
 interface Props {
@@ -9,6 +10,10 @@ interface Props {
     onChange: (value: string) => void
     error?: string
 }
+
+const ReactQuill = dynamic(() => import('react-quill-new'), {
+    ssr: false
+})
 
 const ReactQuillComponent: React.FC<Props> = ({ value, onChange, error }) => {
     return (

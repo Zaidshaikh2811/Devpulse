@@ -16,7 +16,7 @@ import ReactQuillComponent from "@/components/UI/ReactQuill";
 import { createArticle } from "@/actions/create-article";
 import { useRouter } from "next/navigation";
 
-export const categories = [
+const categories = [
     { key: "Web Development", label: "Web Development" },
     { key: "Mobile Development", label: "Mobile Development" },
     { key: "AI & Machine Learning", label: "AI & Machine Learning" },

@@ -194,14 +194,14 @@ export const EditIcon = (props: any) => {
     );
 };
 
-const statusColorMap = {
+const statusColorMap: Record<string, "success" | "danger" | "warning" | "default" | "primary" | "secondary"> = {
     active: "success",
     paused: "danger",
     vacation: "warning",
 };
 
 export default function ArticleTable() {
-    const renderCell = React.useCallback((user: any, columnKey: any) => {
+    const renderCell = React.useCallback((user: { status: keyof typeof statusColorMap;[key: string]: any }, columnKey: string) => {
         const cellValue = user[columnKey];
 
         switch (columnKey) {
@@ -265,7 +265,7 @@ export default function ArticleTable() {
             <TableBody items={users}>
                 {(item) => (
                     <TableRow key={item.id}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                        {(columnKey) => <TableCell>{renderCell(item, columnKey as string)}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
