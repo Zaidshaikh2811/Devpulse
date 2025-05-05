@@ -12,7 +12,7 @@ import {
     Button,
 } from '@heroui/react';
 // import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-
+import { title } from "../primitives";
 export default function ResponsiveSidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -60,22 +60,15 @@ export default function ResponsiveSidebar() {
                     </div>
 
                     <CardHeader className="flex gap-3">
-                        <Image
-                            alt="heroui logo"
-                            height={40}
-                            radius="sm"
-                            src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                            width={40}
-                        />
+
                         <div className="flex flex-col">
-                            <p className="text-md font-semibold">HeroUI</p>
-                            <p className="text-small text-default-500">heroui.com</p>
+                            <p className="font-bold text-inherit"> <span className={title({ color: "blue", size: "sm" })}>Dev</span>Pulse</p>
                         </div>
                     </CardHeader>
                     <Divider />
                     <CardBody className="flex flex-col gap-2">
-                        <Link href="#">Home</Link>
-                        <Link href="#">Dashboard</Link>
+                        <Link href="/">Home</Link>
+                        <Link href="/dashboard">Dashboard</Link>
                         <Link href="#">Projects</Link>
                         <Link href="#">Team</Link>
                         <Link href="#">Settings</Link>
