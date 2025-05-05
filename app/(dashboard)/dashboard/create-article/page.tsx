@@ -61,7 +61,7 @@ const Page = () => {
             formData.append("description", description);
             formData.append("content", content);
 
-            const result = await createArticle(null, formData);
+            const result = await createArticle(formData);
 
             if (result.errors && Object.keys(result.errors).length > 0) {
                 setErrors(result.errors);
@@ -133,7 +133,7 @@ const Page = () => {
                                 isInvalid={!!errors?.category}
                             >
                                 {categories.map((cat) => (
-                                    <SelectItem key={cat.key} value={cat.key}>
+                                    <SelectItem key={cat.key}>
                                         {cat.label}
                                     </SelectItem>
                                 ))}

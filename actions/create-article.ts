@@ -24,7 +24,7 @@ type FormState = {
     success?: boolean;
 };
 
-export const createArticle = async (prevState: FormState, formData: FormData): Promise<FormState> => {
+export const createArticle = async (formData: FormData): Promise<FormState> => {
     const { userId } = await auth();
     if (!userId) {
         return {
