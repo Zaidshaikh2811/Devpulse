@@ -9,69 +9,20 @@ import {
     TableRow,
     TableCell,
     User,
-    Chip,
+    Pagination,
     Tooltip,
 } from "@heroui/react";
+import Link from "next/link";
+
 
 export const columns = [
-    { name: "NAME", uid: "name" },
-    { name: "ROLE", uid: "role" },
-    { name: "STATUS", uid: "status" },
+    { name: "TITLE", uid: "title" },
+    { name: "CATEGORY", uid: "category" },
+    { name: "CREATED AT", uid: "createdAt" },
     { name: "ACTIONS", uid: "actions" },
 ];
 
-export const users = [
-    {
-        id: 1,
-        name: "Tony Reichert",
-        role: "CEO",
-        team: "Management",
-        status: "active",
-        age: "29",
-        avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-        email: "tony.reichert@example.com",
-    },
-    {
-        id: 2,
-        name: "Zoey Lang",
-        role: "Technical Lead",
-        team: "Development",
-        status: "paused",
-        age: "25",
-        avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-        email: "zoey.lang@example.com",
-    },
-    {
-        id: 3,
-        name: "Jane Fisher",
-        role: "Senior Developer",
-        team: "Development",
-        status: "active",
-        age: "22",
-        avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-        email: "jane.fisher@example.com",
-    },
-    {
-        id: 4,
-        name: "William Howard",
-        role: "Community Manager",
-        team: "Marketing",
-        status: "vacation",
-        age: "28",
-        avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-        email: "william.howard@example.com",
-    },
-    {
-        id: 5,
-        name: "Kristen Copper",
-        role: "Sales Manager",
-        team: "Sales",
-        status: "active",
-        age: "24",
-        avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-        email: "kristen.cooper@example.com",
-    },
-];
+
 
 export const EyeIcon = (props: any) => {
     return (
@@ -194,54 +145,50 @@ export const EditIcon = (props: any) => {
     );
 };
 
-const statusColorMap: Record<string, "success" | "danger" | "warning" | "default" | "primary" | "secondary"> = {
-    active: "success",
-    paused: "danger",
-    vacation: "warning",
-};
+export default function ArticleTable({ result }: { result: any[] }) {
+    const [page, setPage] = React.useState(1);
+    const rowsPerPage = 10; // Items per page
 
-export default function ArticleTable() {
-    const renderCell = React.useCallback((user: { status: keyof typeof statusColorMap;[key: string]: any }, columnKey: string) => {
-        const cellValue = user[columnKey];
+    const totalItems = result.data.length;  // Total number of articles in `data`
+    const totalPages = totalItems > 0 ? Math.ceil(totalItems / rowsPerPage) : 1;  // At least 1 page
 
+    // Paginated items based on the current page
+    const paginatedItems = React.useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        return result?.data?.slice(start, start + rowsPerPage) || [];
+    }, [page, result?.data]);
+
+    const renderCell = React.useCallback((article: any, columnKey: string) => {
         switch (columnKey) {
-            case "name":
+            case "title":
                 return (
                     <User
-                        avatarProps={{ radius: "lg", src: user.avatar }}
-                        description={user.email}
-                        name={cellValue}
+                        avatarProps={{ radius: "lg", src: article.featuredImage }}
+                        name={article.title}
                     >
-                        {user.email}
+                        {article.category}
                     </User>
                 );
-            case "role":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-sm capitalize">{cellValue}</p>
-                        <p className="text-bold text-sm capitalize text-default-400">{user.team}</p>
-                    </div>
-                );
-            case "status":
-                return (
-                    <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-                        {cellValue}
-                    </Chip>
-                );
+            case "category":
+                return <span>{article.category}</span>;
+            case "createdAt":
+                return new Date(article.createdAt).toLocaleDateString();
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Details">
+                        <Tooltip content="View">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <EyeIcon />
                             </span>
                         </Tooltip>
-                        <Tooltip content="Edit user">
+                        <Tooltip content="Edit">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EditIcon />
+                                <Link href={`/dashboard/articles/${article.id}/edit`}>
+                                    <EditIcon />
+                                </Link>
                             </span>
                         </Tooltip>
-                        <Tooltip color="danger" content="Delete user">
+                        <Tooltip content="Delete">
                             <span className="text-lg text-danger cursor-pointer active:opacity-50">
                                 <DeleteIcon />
                             </span>
@@ -249,27 +196,43 @@ export default function ArticleTable() {
                     </div>
                 );
             default:
-                return cellValue;
+                return article[columnKey];
         }
     }, []);
 
     return (
-        <Table aria-label="Example table with custom cells">
-            <TableHeader columns={columns}>
-                {(column) => (
-                    <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
-                        {column.name}
-                    </TableColumn>
-                )}
-            </TableHeader>
-            <TableBody items={users}>
-                {(item) => (
-                    <TableRow key={item.id}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey as string)}</TableCell>}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
+        <div className="space-y-4">
+            <Table
+                aria-label="Example table with articles and pagination"
+                isStriped
+                removeWrapper
+            >
+                <TableHeader columns={columns}>
+                    {(column) => (
+                        <TableColumn key={column.uid}>{column.name}</TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody items={paginatedItems}>
+                    {(item) => (
+                        <TableRow key={item.id}>
+                            {(columnKey) => (
+                                <TableCell>{renderCell(item, columnKey as string)}</TableCell>
+                            )}
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+            {totalItems > 0 && (  // Only show pagination if there are items
+                <div className="flex justify-end">
+                    <Pagination
+                        total={totalPages}
+                        page={page}
+                        onChange={setPage}
+                        showControls
+                        variant="light"
+                    />
+                </div>
+            )}
+        </div>
     );
 }
-

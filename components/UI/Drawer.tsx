@@ -12,7 +12,12 @@ import {
     Button,
 } from '@heroui/react';
 // import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { IoHomeOutline } from "react-icons/io5";
 import { title } from "../primitives";
+import { PiArticle } from "react-icons/pi";
+import { FaRegComments } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
+import { TbBrandGoogleAnalytics } from "react-icons/tb";
 export default function ResponsiveSidebar() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -66,15 +71,15 @@ export default function ResponsiveSidebar() {
                         </div>
                     </CardHeader>
                     <Divider />
-                    <CardBody className="flex flex-col gap-2">
-                        <Link href="/">Home</Link>
-                        <Link href="/dashboard">Dashboard</Link>
-                        <Link href="#">Projects</Link>
-                        <Link href="#">Team</Link>
-                        <Link href="#">Settings</Link>
+                    <CardBody className="flex flex-col gap-2 mt-4 h-[80%]">
+                        <Link href="/" className='gap-2'><IoHomeOutline /> <span> Home</span></Link>
+                        <Link href="/dashboard" className='gap-2'><PiArticle /><span>Article</span></Link>
+                        <Link href="#" className='gap-2'><FaRegComments /> <span> Comments</span></Link>
+                        <Link href="#" className='gap-2'><TbBrandGoogleAnalytics /> <span>Analytics</span></Link>
+                        <Link href="#" className='gap-2'><IoSettingsOutline /> <span>Settings </span></Link>
                     </CardBody>
                     <Divider />
-                    <CardFooter>
+                    <CardFooter className='bottom-0'>
                         <Link
                             isExternal
                             showAnchorIcon

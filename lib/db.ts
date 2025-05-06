@@ -7,7 +7,6 @@ import * as schemas from './schema';
 
 
 if (!process.env.NEXT_PUBLIC_API_BASE_URL) {
-    console.log(" process.env.NEXT_PUBLIC_API_BASE_URL  " + process.env.NEXT_PUBLIC_API_BASE_URL);
 
     throw new Error('NEXT_PUBLIC_API_BASE_URL is not defined');
 }

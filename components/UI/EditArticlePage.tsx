@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Card,
     CardHeader,
@@ -11,10 +11,12 @@ import {
     Select,
     SelectItem,
     addToast,
+    Image,
 } from "@heroui/react";
 import ReactQuillComponent from "@/components/UI/ReactQuill";
 import { createArticle } from "@/actions/create-article";
 import { useRouter } from "next/navigation";
+import { editArticle } from "@/actions/edit-articles";
 
 const categories = [
     { key: "Web Development", label: "Web Development" },
@@ -41,15 +43,41 @@ type FormErrors = {
     image?: string[];
 };
 
-const Page = () => {
+const EditArticlePage = ({
+    id,
+    title,
+    category,
+    content,
+    image,
+    description,
+}: {
+    title: string;
+    category: string;
+    content: string;
+    image: string;
+    description: string;
+}) => {
     const router = useRouter();
-    const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("");
-    const [content, setContent] = useState("");
-    const [description, setDescription] = useState("");
+    const [editedTitle, setTitle] = useState(title);
+    const [editedCategory, setCategory] = useState(category);
+    const [editedContent, setContent] = useState(content);
+    const [editedDescription, setDescription] = useState(description);
     const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
-    const [image, setImage] = useState<File | null>(null);
+    const [editedImage, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState(image);
+
+    // Effect to update image preview if a new image is selected
+    useEffect(() => {
+        if (editedImage) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(editedImage);
+        }
+    }, [editedImage]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
@@ -57,16 +85,16 @@ const Page = () => {
 
         try {
             const formData = new FormData();
-            formData.append("title", title);
-            formData.append("category", category);
-            formData.append("description", description);
-            formData.append("content", content);
-            if (image) {
-                formData.append("image", image);
+            formData.append("id", id);
+            formData.append("title", editedTitle);
+            formData.append("category", editedCategory);
+            formData.append("description", editedDescription);
+            formData.append("content", editedContent);
+            if (editedImage) {
+                formData.append("image", editedImage);
             }
 
-
-            const result = await createArticle(formData);
+            const result = await editArticle(formData);
 
             if (result.errors && Object.keys(result.errors).length > 0) {
                 setErrors(result.errors);
@@ -75,11 +103,8 @@ const Page = () => {
                     title: "Success",
                     description: "Article created successfully",
                     color: "success",
-                    variant: "bordered"
-
+                    variant: "bordered",
                 });
-
-
 
                 router.push("/dashboard");
             }
@@ -98,7 +123,7 @@ const Page = () => {
             <Card className="w-full max-w-3xl shadow-lg rounded-xl">
                 <CardHeader>
                     <h2 className="text-2xl font-semibold text-default-800">
-                        Create New Article
+                        Edit Article
                     </h2>
                 </CardHeader>
 
@@ -118,7 +143,7 @@ const Page = () => {
                             </label>
                             <Input
                                 name="title"
-                                value={title}
+                                value={editedTitle}
                                 onChange={(e) => setTitle(e.target.value)}
                                 isInvalid={!!errors?.title}
                             />
@@ -134,7 +159,7 @@ const Page = () => {
                             <Select
                                 aria-label="Select Category"
                                 name="category"
-                                selectedKeys={category ? [category] : []}
+                                selectedKeys={editedCategory ? [editedCategory] : []}
                                 onSelectionChange={(keys) => {
                                     const keyArray = Array.from(keys);
                                     setCategory(keyArray[0] as string);
@@ -158,7 +183,7 @@ const Page = () => {
                             </label>
                             <Input
                                 name="description"
-                                value={description}
+                                value={editedDescription}
                                 onChange={(e) => setDescription(e.target.value)}
                                 isInvalid={!!errors?.description}
                             />
@@ -166,17 +191,31 @@ const Page = () => {
                                 <p className="text-red-500 text-sm">{errors.description[0]}</p>
                             )}
                         </div>
-                        <div className="space-y-1">
+
+                        <div className="space-y-1 ">
                             <label htmlFor="image" className="text-sm font-medium text-default-600">
                                 Thumbnail Image
                             </label>
-                            <Input
-                                name="image"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setImage(e.target.files?.[0] || null)}
-                                isInvalid={!!errors?.image}
-                            />
+                            <div className="flex gap-2">
+
+                                {imagePreview && (
+                                    <Image
+                                        isBlurred
+                                        isZoomed
+
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        className="w-36 h-32 object-cover mb-2"
+                                    />
+                                )}
+                                <Input
+                                    name="image"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setImage(e.target.files?.[0] || null)}
+                                    isInvalid={!!errors?.image}
+                                />
+                            </div>
                             {errors?.image && (
                                 <p className="text-red-500 text-sm">{errors.image[0]}</p>
                             )}
@@ -186,8 +225,8 @@ const Page = () => {
                             <label htmlFor="content" className="text-sm font-medium text-default-600">
                                 Content
                             </label>
-                            <ReactQuillComponent value={content} onChange={setContent} />
-                            <input type="hidden" name="content" value={content} />
+                            <ReactQuillComponent value={editedContent} onChange={setContent} />
+                            <input type="hidden" name="content" value={editedContent} />
                             {errors?.content && (
                                 <p className="text-red-500 text-sm">{errors.content[0]}</p>
                             )}
@@ -219,4 +258,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default EditArticlePage;

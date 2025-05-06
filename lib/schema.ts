@@ -1,5 +1,5 @@
 // db/schema.ts
-import { relations } from "drizzle-orm";
+import { desc, relations } from "drizzle-orm";
 import { pgTable, text, varchar, boolean, timestamp, primaryKey, unique } from "drizzle-orm/pg-core";
 
 // Users table
@@ -17,6 +17,7 @@ export const articles = pgTable("articles", {
     id: varchar("id", { length: 255 }).primaryKey(),
     title: text("title").notNull(),
     content: text("content").notNull(),
+    description: text("description").notNull(),
     category: text("category").notNull(),
     featuredImage: text("featured_image").notNull(),
     authorId: varchar("author_id", { length: 255 }).notNull().references(() => users.id),
