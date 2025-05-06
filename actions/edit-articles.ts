@@ -25,7 +25,7 @@ export const editArticle = async (
         console.log(id, title, description, content, newImage);
 
         const article = await db.query.articles.findFirst({
-            where: eq(articles.id, id),
+            where: eq(articles.id, id || ""),
         });
 
         if (!article) {

@@ -51,6 +51,7 @@ const EditArticlePage = ({
     image,
     description,
 }: {
+    id: string;
     title: string;
     category: string;
     content: string;

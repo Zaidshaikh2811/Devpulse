@@ -9,7 +9,7 @@ const RecentArticles = async () => {
 
     return (
         <div>
-            <ArticleTable result={result} />
+            <ArticleTable result={{ ...result, data: result.data ?? [] }} />
         </div>
     )
 }

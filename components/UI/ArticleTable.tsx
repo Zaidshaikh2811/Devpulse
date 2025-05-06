@@ -145,7 +145,9 @@ export const EditIcon = (props: any) => {
     );
 };
 
-export default function ArticleTable({ result }: { result: any[] }) {
+export default function ArticleTable({ result }: {
+    result: { data: any[] }
+}) {
     const [page, setPage] = React.useState(1);
     const rowsPerPage = 10; // Items per page
 

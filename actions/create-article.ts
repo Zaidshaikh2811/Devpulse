@@ -42,7 +42,7 @@ type FormState = {
 // Main server action
 
 
-export const getUserId = async (userId: String) => {
+export const getUserId = async (userId: string) => {
     try {
         const existingUser = await db.select().from(users).where(eq(users.clerkUserId, userId));
 
@@ -154,7 +154,7 @@ export const createArticle = async (formData: FormData): Promise<FormState> => {
             category: String(category),
             content: String(content),
             description: String(description),
-            featuredImage: imageUrl ?? null,
+            featuredImage: imageUrl ?? "",
             authorId: existingUser[0]?.id,
             createdAt: new Date(),
         });
@@ -181,14 +181,16 @@ export async function getArticlesByUserWithStats(page = 1, limit = 10) {
         const offset = (page - 1) * limit;
 
         // Get paginated articles
-        const id = await getUserId(userId);
+        const idResult = await getUserId(userId);
 
-
+        if (typeof idResult !== "string") {
+            return { message: "User not found", success: false };
+        }
 
         const articlesList = await db
             .select()
             .from(articles)
-            .where(eq(articles.authorId, id))
+            .where(eq(articles.authorId, idResult))
             .limit(limit)
             .offset(offset);
 
