@@ -38,6 +38,7 @@ type FormErrors = {
     description?: string[];
     content?: string[];
     general?: string[];
+    image?: string[];
 };
 
 const Page = () => {
@@ -48,7 +49,7 @@ const Page = () => {
     const [description, setDescription] = useState("");
     const [errors, setErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState(false);
-
+    const [image, setImage] = useState<File | null>(null);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
@@ -60,6 +61,10 @@ const Page = () => {
             formData.append("category", category);
             formData.append("description", description);
             formData.append("content", content);
+            if (image) {
+                formData.append("image", image);
+            }
+
 
             const result = await createArticle(formData);
 
@@ -157,6 +162,21 @@ const Page = () => {
                                 <p className="text-red-500 text-sm">{errors.description[0]}</p>
                             )}
                         </div>
+                        <div className="space-y-1">
+                            <label htmlFor="image" className="text-sm font-medium text-default-600">
+                                Thumbnail Image
+                            </label>
+                            <Input
+                                name="image"
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files?.[0] || null)}
+                                isInvalid={!!errors?.image}
+                            />
+                            {errors?.image && (
+                                <p className="text-red-500 text-sm">{errors.image[0]}</p>
+                            )}
+                        </div>
 
                         <div className="space-y-1">
                             <label htmlFor="content" className="text-sm font-medium text-default-600">
@@ -173,12 +193,14 @@ const Page = () => {
                             <Button
                                 type="button"
                                 variant="flat"
+                                color="danger"
                                 onPress={() => router.push("/dashboard")}
                                 isDisabled={isLoading}
                             >
                                 Cancel
                             </Button>
                             <Button
+                                color="success"
                                 type="submit"
                                 variant="ghost"
                                 isLoading={isLoading}
