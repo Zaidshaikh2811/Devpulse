@@ -6,7 +6,7 @@ import { IoDocumentSharp } from "react-icons/io5";
 import { FaRegComment } from "react-icons/fa";
 import { MdOutlineAccessTime } from "react-icons/md";
 import RecentArticles from '@/components/UI/RecentArticles';
-import { redirect } from 'next/navigation';
+
 import Link from 'next/link';
 
 const page = () => {

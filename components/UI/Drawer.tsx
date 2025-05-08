@@ -18,8 +18,12 @@ import { PiArticle } from "react-icons/pi";
 import { FaRegComments } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TbBrandGoogleAnalytics } from "react-icons/tb";
+import { ThemeSwitch } from '../theme-switch';
+import { useTheme } from 'next-themes';
 export default function ResponsiveSidebar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { theme } = useTheme();
+
 
     return (
         <>
@@ -71,12 +75,24 @@ export default function ResponsiveSidebar() {
                         </div>
                     </CardHeader>
                     <Divider />
-                    <CardBody className="flex flex-col gap-2 mt-4 h-[80%]">
-                        <Link href="/" className='gap-2'><IoHomeOutline /> <span> Home</span></Link>
-                        <Link href="/dashboard" className='gap-2'><PiArticle /><span>Article</span></Link>
-                        <Link href="#" className='gap-2'><FaRegComments /> <span> Comments</span></Link>
-                        <Link href="#" className='gap-2'><TbBrandGoogleAnalytics /> <span>Analytics</span></Link>
-                        <Link href="#" className='gap-2'><IoSettingsOutline /> <span>Settings </span></Link>
+                    <CardBody className="flex justify-between  mt-4 h-[80%]">
+                        <div className='flex flex-col gap-2'>
+
+                            <Link href="/" className='gap-2'><IoHomeOutline /> <span> Home</span></Link>
+                            <Link href="/dashboard" className='gap-2'><PiArticle /><span>Article</span></Link>
+                            <Link href="#" className='gap-2'><FaRegComments /> <span> Comments</span></Link>
+                            <Link href="#" className='gap-2'><TbBrandGoogleAnalytics /> <span>Analytics</span></Link>
+                            <Link href="#" className='gap-2'><IoSettingsOutline /> <span>Settings </span></Link>
+                        </div>
+                        <div>
+                            <span className='flex gap-2  items-center '>
+
+                                <ThemeSwitch />
+                                {
+                                    theme === "light" ? <span className="text-sm">Light</span> : <span className="text-sm">Dark</span>
+                                }
+                            </span>
+                        </div>
                     </CardBody>
                     <Divider />
                     <CardFooter className='bottom-0'>

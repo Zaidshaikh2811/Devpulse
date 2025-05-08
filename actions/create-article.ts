@@ -16,7 +16,7 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY!,
     api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
-type CountResult = { articleId: string; count: number };
+
 
 
 // Zod schema validation

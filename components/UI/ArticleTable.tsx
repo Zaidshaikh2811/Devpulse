@@ -11,8 +11,10 @@ import {
     User,
     Pagination,
     Tooltip,
+    addToast,
 } from "@heroui/react";
 import Link from "next/link";
+import { deleteArticleById } from "@/actions/delete-article";
 
 
 export const columns = [
@@ -145,6 +147,19 @@ export const EditIcon = (props: any) => {
     );
 };
 
+
+const deleteArticle = async (id: string) => {
+    try {
+
+
+        await deleteArticleById(id);
+        addToast({ variant: "flat", color: "success", title: "Success", description: "Article deleted successfully" });
+    }
+    catch (error) {
+        addToast({ variant: "flat", color: "danger", title: "Error", description: "Failed to delete article" });
+    }
+}
+
 export default function ArticleTable({ result }: {
     result: { data: any[] }
 }) {
@@ -190,9 +205,9 @@ export default function ArticleTable({ result }: {
                                 </Link>
                             </span>
                         </Tooltip>
-                        <Tooltip content="Delete">
+                        <Tooltip content="Delete" >
                             <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                <DeleteIcon />
+                                <DeleteIcon onClick={() => deleteArticle(article.id)} />
                             </span>
                         </Tooltip>
                     </div>
