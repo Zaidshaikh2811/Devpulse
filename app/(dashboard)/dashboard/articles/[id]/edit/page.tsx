@@ -6,6 +6,10 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params
     const article = await getArticleByID(id)
 
+    if (!article) {
+        return <div>Article not found</div>
+    }
+
     const { title, category, content, featuredImage, description } = article
 
 

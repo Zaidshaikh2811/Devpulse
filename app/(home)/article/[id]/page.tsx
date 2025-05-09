@@ -12,7 +12,7 @@ import { auth } from '@clerk/nextjs/server';
 import CommentForm from '@/components/UI/CommentForm'; // ✅ your client component
 
 
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { userId } = await auth();
     const { id } = await params;
     const article = await getArticleByID(id);
