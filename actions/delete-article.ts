@@ -1,6 +1,7 @@
 "use server"
 import { db } from "@/lib/db";
 import { articles } from "@/lib/schema";
+import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -15,6 +16,11 @@ cloudinary.config({
 
 export const deleteArticleById = async (id: string) => {
     try {
+        const { userId } = await auth();
+
+        if (!userId) {
+            throw new Error("User not found");
+        }
 
         const article = await db.query.articles.findFirst({
             where: eq(articles.id, id || ""),

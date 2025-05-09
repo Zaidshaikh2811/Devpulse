@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/', '/(api)(.*)'])
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/', '/(api)(.*)', '/article(.*)'])
 
 
 export default clerkMiddleware(async (auth, req) => {

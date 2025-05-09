@@ -1,9 +1,15 @@
+"use server"
+
 import { db } from "@/lib/db";
 import { articles, users } from "@/lib/schema";
 import { desc, eq, like, sql } from "drizzle-orm";
 
 export const getArticleByID = async (id: string) => {
     try {
+
+
+
+
         const [article] = await db
             .select({
                 id: articles.id,

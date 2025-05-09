@@ -10,6 +10,8 @@ import { Button } from '@heroui/button';
 import CommentShow from '@/components/UI/CommentShow';
 import { auth } from '@clerk/nextjs/server';
 import CommentForm from '@/components/UI/CommentForm'; // ✅ your client component
+import LikeButton from '@/components/UI/LikeButton';
+import CommentCount from '@/components/UI/CommentCount';
 
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -67,18 +69,20 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
             {/* Interactions */}
             <div className="flex flex-col sm:flex-row justify-between items-center border-t pt-6 gap-4">
-                <Button variant="bordered" className="flex items-center gap-2">
-                    <Heart className="w-4 h-4" />
-                    Like
-                </Button>
-                <Button variant="bordered" className="flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    Comment
-                </Button>
+
+                <LikeButton articleId={article.id} userId={userId} />
+                <CommentCount articleId={article.id} />
             </div>
 
-            {/* Comment Form (Client Component) */}
-            <CommentForm articleId={`${article.id}`} userId={`${userId}`} />
+            <h3 className="text-lg font-semibold mb-3">Leave a comment</h3>
+            {
+                userId ?
+                    <>
+                        <CommentForm articleId={article.id} userId={userId} />
+                    </>
+                    :
+                    <h1>Login to comment</h1>
+            }
 
             {/* Comments */}
             <div className="space-y-6">

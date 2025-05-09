@@ -45,7 +45,7 @@ const CommentForm = ({
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
 
-            <h3 className="text-lg font-semibold mb-3">Leave a comment</h3>
+
             <Textarea value={content} onChange={(e) => setContent(e.target.value)
 
             } placeholder="Write your comment here..." className="mb-4"

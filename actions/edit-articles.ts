@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { articles } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { v2 as cloudinary } from "cloudinary";
+import { auth } from "@clerk/nextjs/server";
 
 
 cloudinary.config({
@@ -16,13 +17,19 @@ export const editArticle = async (
 ) => {
     try {
 
+        const { userId } = await auth();
+
+        if (!userId) {
+            throw new Error("User not found");
+        }
+
         const id = formData.get("id") as string | null;
         const title = formData.get("title") as string | null;
         const description = formData.get("description") as string | null;
         const content = formData.get("content") as string | null;
         const newImage = formData.get("image") as File | null;
 
-        console.log(id, title, description, content, newImage);
+
 
         const article = await db.query.articles.findFirst({
             where: eq(articles.id, id || ""),

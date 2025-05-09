@@ -9,6 +9,8 @@ export const getArticleCommentById = async (
     offset = 0
 ) => {
     try {
+
+        await new Promise((resolve) => setTimeout(resolve, 3000));
         const commentsData = await db
             .select({
                 id: comments.id,

@@ -4,12 +4,19 @@
 
 import { db } from "@/lib/db";
 import { comments, users } from "@/lib/schema";
+import { auth } from "@clerk/nextjs/server";
 import cuid from "cuid";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function addComment({ articleId, comment, userId }: { articleId: string, comment: string, userId: string }) {
     try {
+
+        const { userId } = await auth();
+
+        if (!userId) {
+            throw new Error("Login To add Comment");
+        }
         // Get the user data by userId
         const getUserId = await db.select().from(users).where(eq(users.clerkUserId, userId));
 
