@@ -12,8 +12,16 @@ export const getArticleByID = async (id: string) => {
                 featuredImage: articles.featuredImage,
                 createdAt: articles.createdAt,
                 description: articles.description,
+                author: {
+
+                    name: users.name,
+                    email: users.email,
+                    imageUrl: users.imageUrl,
+                    role: users.role,
+                },
             })
             .from(articles)
+            .leftJoin(users, eq(articles.authorId, users.id))
             .where(eq(articles.id, id));
 
         return article || null;

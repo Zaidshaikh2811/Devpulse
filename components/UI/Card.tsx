@@ -42,13 +42,7 @@ export default function CardComponent({
 
                 <CardBody className="p-4 space-y-2">
                     <div className="flex items-center gap-2">
-                        <Avatar
-                            name={authorName}
-                            src={authorImageUrl}
-                            size="sm"
-                            className="bg-primary text-primary-foreground text-sm"
-                        />
-                        <p className="text-sm font-medium">{authorName}</p>
+
                     </div>
 
                     <h1 className="text-lg font-semibold">{title}</h1>
