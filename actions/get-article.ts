@@ -6,6 +6,7 @@ export const getArticleByID = async (id: string) => {
     try {
         const [article] = await db
             .select({
+                id: articles.id,
                 title: articles.title,
                 content: articles.content,
                 category: articles.category,
@@ -13,7 +14,6 @@ export const getArticleByID = async (id: string) => {
                 createdAt: articles.createdAt,
                 description: articles.description,
                 author: {
-
                     name: users.name,
                     email: users.email,
                     imageUrl: users.imageUrl,
@@ -24,8 +24,26 @@ export const getArticleByID = async (id: string) => {
             .leftJoin(users, eq(articles.authorId, users.id))
             .where(eq(articles.id, id));
 
-        return article || null;
-        return article || null;
+        if (!article) {
+            return null;
+        }
+
+        // Return only plain objects (sanitize the data)
+        return {
+            id: article.id,
+            title: article.title,
+            content: article.content,
+            category: article.category,
+            featuredImage: article.featuredImage,
+            createdAt: article.createdAt.toISOString(), // Convert Date to ISO string
+            description: article.description,
+            author: {
+                name: article?.author?.name,
+                email: article?.author?.email,
+                imageUrl: article?.author?.imageUrl || '',
+                role: article?.author?.role,
+            },
+        };
     } catch (err: any) {
         throw new Error(err.message || "Failed to get article");
     }

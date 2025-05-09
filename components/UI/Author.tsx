@@ -11,7 +11,7 @@ const Author = ({
     authorImageUrl: string;
 }) => {
     return (
-        <div>
+        <div className='flex items-center gap-2'>
             <Avatar
                 name={authorName}
                 src={authorImageUrl}
