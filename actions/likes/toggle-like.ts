@@ -42,12 +42,7 @@ export const toggleArticleLike = async (articleId: string, userId: string) => {
         }
     }
 
-    const [count] = await db
-        .select({ count: sql<number>`count(*)` })
-        .from(likes)
-        .where(and(eq(likes.articleId, articleId), eq(likes.isLiked, true)));
 
-    return count;
 
 }
 

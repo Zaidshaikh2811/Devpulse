@@ -2,6 +2,7 @@ import { Button } from '@heroui/button'
 import React from 'react'
 import CardComponent from './Card'
 import { getFeaturedArticles } from '@/actions/get-article'
+import Link from 'next/link'
 
 const FeatureArticles = async () => {
 
@@ -14,7 +15,8 @@ const FeatureArticles = async () => {
 
                 <h1 className='text-2xl'>Feature Articles</h1>
                 <Button color="primary" variant="ghost">
-                    Read All Articles
+                    <Link href="/article">  Read All Articles</Link>
+
                 </Button>
 
 

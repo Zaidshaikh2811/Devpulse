@@ -20,7 +20,8 @@ const CommentCount = ({ articleId }: { articleId: string }) => {
     }, [articleId]);
 
     return (
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700   rounded-md
+        px-6 py-3  ">
             <MessageCircle className="w-4 h-4" />
             {count} comment{count !== 1 ? 's' : ''}
         </div>

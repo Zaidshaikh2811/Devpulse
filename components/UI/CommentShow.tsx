@@ -52,7 +52,7 @@ const CommentShow = ({ articleId }: { articleId: string }) => {
     }, [loaderRef.current, hasMore, loading]);
 
     return (
-        <div className="max-h-96 overflow-y-auto p-4 border rounded-md shadow-sm bg-white dark:bg-black dark:border-gray-700 space-y-4">
+        <div className="max-h-96 scrollbar-hide overflow-y-auto p-4  shadow-sm bg-white dark:bg-black space-y-4">
             <CommentList comments={comments} />
 
             {loading && (
