@@ -32,7 +32,7 @@ export const Navbar = () => {
         <ul className="hidden lg:flex gap-6 ml-6 items-center">
           <Link size="lg" href="/">Home</Link>
           <Link size="lg" href="/dashboard">Dashboard</Link>
-          <Link size="lg" href="/articles">All-Articles</Link>
+          <Link size="lg" href="/article">All-Articles</Link>
         </ul>
       </NavbarContent>
 
@@ -53,7 +53,7 @@ export const Navbar = () => {
         <div className="flex flex-col gap-4 px-4">
           <Link size="lg" href="/">Home</Link>
           <Link size="lg" href="/dashboard">Dashboard</Link>
-          <Link size="lg" href="/articles">All-Articles</Link>
+          <Link size="lg" href="/article">All-Articles</Link>
           <Logout />
         </div>
       </NavbarMenu>

@@ -18,7 +18,6 @@ const AllArticle = ({ articles, totalCount, currentPage, searchQuery }: {
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
     useEffect(() => {
-        console.log(search);
 
         const timer = setTimeout(() => {
             setDebouncedSearch(search);
@@ -34,7 +33,7 @@ const AllArticle = ({ articles, totalCount, currentPage, searchQuery }: {
 
     return (
         <div>
-            <div className='flex justify-between'>
+            <div className='flex flex-col md:flex-row items-center justify-between gap-2 '>
                 <h3 className={title({ color: "blue" })}>All Articles</h3>
                 <ArticleSearch value={search} onChange={setSearch} />
             </div>

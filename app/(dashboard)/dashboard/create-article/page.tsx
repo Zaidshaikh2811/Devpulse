@@ -16,6 +16,9 @@ import ReactQuillComponent from "@/components/UI/ReactQuill";
 import { createArticle } from "@/actions/create-article";
 import { useRouter } from "next/navigation";
 
+import Head from "next/head";
+
+
 const categories = [
     { key: "Web Development", label: "Web Development" },
     { key: "Mobile Development", label: "Mobile Development" },
@@ -95,6 +98,10 @@ const Page = () => {
 
     return (
         <div className="flex justify-center p-6 min-h-screen ">
+            <Head>
+                <title>Create Article</title>
+                <meta name="description" content="Create a new article" />
+            </Head>
             <Card className="w-full max-w-3xl shadow-lg rounded-xl">
                 <CardHeader>
                     <h2 className="text-2xl font-semibold text-default-800">

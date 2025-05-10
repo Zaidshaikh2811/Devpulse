@@ -11,6 +11,14 @@ import LikeButton from '@/components/UI/LikeButton';
 import CommentCount from '@/components/UI/CommentCount';
 import CommentShow from '@/components/UI/CommentShow';
 
+
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Article",
+    description: "View article",
+}
+
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { userId } = await auth();
     const { id } = await params;

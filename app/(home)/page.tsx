@@ -6,6 +6,15 @@ import FeatureArticles from "@/components/UI/FeatureArticles";
 import FeaturedCategorie from "@/components/UI/FeaturedCategorie";
 import Footer from "@/components/UI/Footer";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "DevPulse",
+  description: "Your go-to blog for cutting-edge tutorials, frameworks, and guides on building high-performance web apps.",
+}
+
+
+
 export default function Home() {
   return (
     <>
