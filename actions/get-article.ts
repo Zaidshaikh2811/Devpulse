@@ -70,8 +70,9 @@ export async function getAllArticles({
     try {
         const offset = (page - 1) * limit;
 
+        // Improved search condition (case-insensitive)
         const whereClause = search
-            ? like(articles.title, `%${search}%`)
+            ? sql`LOWER(${articles.title}) LIKE LOWER(${'%' + search + '%'})`
             : undefined;
 
         const query = db
@@ -101,21 +102,21 @@ export async function getAllArticles({
 
         const articlesList = await query;
 
-        // Optionally get total count
+        // Get total count with the same where clause
         const [{ count }] = await db
             .select({ count: sql<number>`count(*)` })
             .from(articles)
-            .where(whereClause || sql`true`);
+            .where(whereClause || sql`1=1`); // Using 1=1 instead of 'true' for better SQL compatibility
 
         return {
             articles: articlesList,
-            totalCount: count,
+            totalCount: Number(count), // Ensure count is a number
         };
     } catch (err: any) {
+        console.error('Error fetching articles:', err); // Better error logging
         throw new Error(err.message || "Failed to get articles");
     }
 }
-
 
 
 export const getFeaturedArticles = async () => {

@@ -17,6 +17,7 @@ const AllArticle = ({ articles, totalCount, currentPage, searchQuery }: {
     const [search, setSearch] = useState(searchQuery);
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
 
+
     useEffect(() => {
 
         const timer = setTimeout(() => {
@@ -38,13 +39,13 @@ const AllArticle = ({ articles, totalCount, currentPage, searchQuery }: {
                 <ArticleSearch value={search} onChange={setSearch} />
             </div>
 
-            <div className='grid gap-4 mt-6'>
-                {articles.map(article => (
+            <div className='grid gap-4 mt-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3' >
+                {articles.map((article, index) => (
                     <CardComponent
                         id={article.articleId}
                         authorName={article.author.name}
                         authorImageUrl={article.author.imageUrl}
-                        key={article.createdAt}
+                        key={`${article.createdAt}-${index}`}
                         title={article.title}
 
                         category={article.category}

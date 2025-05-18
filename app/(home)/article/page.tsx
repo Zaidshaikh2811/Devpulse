@@ -11,11 +11,14 @@ export const metadata: Metadata = {
 }
 
 
-const Page = async ({ searchParams }: any) => {
-    const page = Number(searchParams?.page || 1);
-    const search = searchParams?.search || '';
+const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; search: string }> }) => {
+    const params = await searchParams;
+    const page = Number(params?.page || 1);
+    const search = params?.search || '';
+
 
     const { articles, totalCount } = await getAllArticles({ page, search });
+
 
     return (
         <div className="container">
